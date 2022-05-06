@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { PostMessage } from "../models/postMessage.js";
 
 const CustomResponse = (res, statusCode, data) => {
@@ -15,7 +16,7 @@ export async function getPosts(req, res) {
 
 export async function createPost(req, res) {
   const post = req.body;
-
+  console.log("Post >>", post);
   const newPost = PostMessage(post);
   try {
     await newPost.save();
@@ -23,4 +24,14 @@ export async function createPost(req, res) {
   } catch (error) {
     CustomResponse(res, 401, { message: error.message });
   }
+}
+export async function updatePost(req, res) {
+  const { id: _id } = req.params;
+  const post = req.body;
+  if (!mongoose.Types.ObjectId.isValid(_id))
+    return CustomResponse(res, 404, { message: "No post with that ID" });
+
+  const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, { new: true });
+
+  CustomResponse(res,201,updatedPost)
 }

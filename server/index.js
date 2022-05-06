@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/posts", postRoutes);
 
-const CONNECT_URL = "mongodb://localhost:27017";
+const CONNECT_URL = "mongodb://localhost:27017/memories";
 const PORT = process.env.PORT || 5000;
 mongoose
   .connect(CONNECT_URL)
